@@ -1,7 +1,6 @@
 import cv2
 
-# Read image: (1: read as rbg, 0: read as greyscale, -1: color img with transparancy)
-img = cv2.imread('galaxy.jpg', 0)
+img = cv2.imread('galaxy.jpg',0)
 
 # Image is a Numpy array
 print(type(img))
