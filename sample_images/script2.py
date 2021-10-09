@@ -1,8 +1,6 @@
 import cv2
 import glob
-import os
 
-# Read image: (1: read as rbg, 0: read as greyscale, -1: color img with transparancy)
 images = glob.glob("*.jpg")
 
 for image in images:
