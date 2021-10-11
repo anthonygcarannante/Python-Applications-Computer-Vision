@@ -1,14 +1,17 @@
 import cv2, time
+from datetime import datetime 
 
 # Define variable for first frame with "None" value to call later
 first_frame = None
+status_list = []
+times = []
 
 video = cv2.VideoCapture(0)
 time.sleep(2)
 
 while True:
     check, frame = video.read()
-
+    status = 0
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # Smooths out blurs in image
     gray = cv2.GaussianBlur(gray, (21,21), 0)
@@ -27,24 +30,32 @@ while True:
 
     # Iterate and check if contour area is less than 1000 pixels. If so, go to the next contour
     for contour in cnts:
-        if cv2.contourArea(contour) < 100:
+        if cv2.contourArea(contour) < 10000:
             continue
+        status=1
         
         # If contour is greater than 1000 pixels, draw rectangle around it.
         (x, y, w, h)=cv2.boundingRect(contour)
         cv2.rectangle(frame, (x,y), (x+w, y+h), (0,255,0), 3)
 
+    status_list.append(status)
+    if status_list[-1] == 1 and status_list[-2]==0:
+        times.append(datetime.now())
+
     # Compare blurry and gray-scaled image
     cv2.imshow("Color Frame", frame)
-    cv2.imshow("Delta Frame", delta_frame)
-    cv2.imshow("Threshold Frame", thresh_frame)
+    # cv2.imshow("Delta Frame", delta_frame)
+    # cv2.imshow("Threshold Frame", thresh_frame)
 
     key=cv2.waitKey(1)
 
-    # Capture video. If captured,
+    # Stop code when q key is pressed
     if key == ord('q'):
         break
 
-# Print number of frames captured
+    print(status)
+
+print(status_list)
+print(times)
 video.release()
 cv2.destroyAllWindows()
