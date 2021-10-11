@@ -1,9 +1,10 @@
-import cv2
+import cv2, time
 
 # Define variable for first frame with "None" value to call later
 first_frame = None
 
 video = cv2.VideoCapture(0)
+time.sleep(2)
 
 while True:
     check, frame = video.read()
@@ -26,7 +27,7 @@ while True:
 
     # Iterate and check if contour area is less than 1000 pixels. If so, go to the next contour
     for contour in cnts:
-        if cv2.contourArea(contour) < 1000:
+        if cv2.contourArea(contour) < 100:
             continue
         
         # If contour is greater than 1000 pixels, draw rectangle around it.
@@ -34,7 +35,7 @@ while True:
         cv2.rectangle(frame, (x,y), (x+w, y+h), (0,255,0), 3)
 
     # Compare blurry and gray-scaled image
-    cv2.imshow("Gray Frame", gray)
+    cv2.imshow("Color Frame", frame)
     cv2.imshow("Delta Frame", delta_frame)
     cv2.imshow("Threshold Frame", thresh_frame)
 
