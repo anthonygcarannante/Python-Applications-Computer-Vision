@@ -38,12 +38,16 @@ while True:
         (x, y, w, h)=cv2.boundingRect(contour)
         cv2.rectangle(frame, (x,y), (x+w, y+h), (0,255,0), 3)
 
+    # Store status of motion detection in list 0 or 1
     status_list.append(status)
-    if status_list[-1] == 1 and status_list[-2]==0:
+
+    # If an object was detected (i.e., status_list = [0,1]), record the time
+    if status_list[-1] == 1 and status_list[-2] == 0:
         times.append(datetime.now())
 
     # Compare blurry and gray-scaled image
     cv2.imshow("Color Frame", frame)
+    # cv2.imshow("Gray Frame", gray)
     # cv2.imshow("Delta Frame", delta_frame)
     # cv2.imshow("Threshold Frame", thresh_frame)
 
@@ -51,6 +55,8 @@ while True:
 
     # Stop code when q key is pressed
     if key == ord('q'):
+        if status == 1:
+            times.append(datetime.now())
         break
 
     print(status)
