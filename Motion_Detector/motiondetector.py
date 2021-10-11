@@ -17,9 +17,11 @@ while True:
         first_frame = gray
         continue
 
+    print(gray)
+    print(first_frame)
+
     # Compare blurry and gray-scaled image
     delta_frame = cv2.absdiff(first_frame, gray)
-
 
     cv2.imshow("Gray Frame", gray)
     cv2.imshow("Delta Frame", delta_frame)
