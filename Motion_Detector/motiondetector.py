@@ -1,11 +1,12 @@
 import cv2, time
-from datetime import datetime 
+import pandas as pd
+from datetime import datetime
 
 # Define variable for first frame with "None" value to call later
 first_frame = None
-status_list = []
+status_list = [None, None]
 times = []
-
+df = pd.DataFrame(columns=['Start','End'])
 video = cv2.VideoCapture(0)
 time.sleep(2)
 
@@ -44,8 +45,10 @@ while True:
     # If an object was detected (i.e., status_list = [0,1]), record the time
     if status_list[-1] == 1 and status_list[-2] == 0:
         times.append(datetime.now())
+    if status_list[-1] == 0 and status_list[-2] == 1:
+        times.append(datetime.now())
 
-    # Compare blurry and gray-scaled image
+    # Show image
     cv2.imshow("Color Frame", frame)
     # cv2.imshow("Gray Frame", gray)
     # cv2.imshow("Delta Frame", delta_frame)
@@ -63,5 +66,12 @@ while True:
 
 print(status_list)
 print(times)
+
+# If have a start and end time, iterate through loop twice, and append start and end time
+for i in range(0,len(times),2):
+    df=df.append({"Start":times[i], "End":times[i+1]},ignore_index=True)
+
+df.to_csv('data.csv')
+
 video.release()
 cv2.destroyAllWindows()
