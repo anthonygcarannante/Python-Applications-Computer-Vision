@@ -42,6 +42,8 @@ while True:
     # Store status of motion detection in list 0 or 1
     status_list.append(status)
 
+    status_list=status_list[-2:]
+
     # If an object was detected (i.e., status_list = [0,1]), record the time
     if status_list[-1] == 1 and status_list[-2] == 0:
         times.append(datetime.now())
